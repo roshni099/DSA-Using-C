@@ -1,120 +1,165 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-struct node
+struct stack
 {
     int data;
-    struct node *next;
-} *top = NULL;
+    struct stack *next;
+};
 
-void push(int x)
+struct stack *top = NULL;
+static int i =-1;
+
+void push()
 {
-    struct node *t = (struct node *)malloc(sizeof(struct node));
+    int ele;
+    struct stack *t = (struct stack *)malloc(sizeof(struct stack));
     if (t == NULL)
     {
-        printf("\nStack overflow\n");
+        printf("\nStack overflow.\n");
     }
     else
     {
-        t->data = x;
+        i++;
+        printf("\nElement[%d]: ", i);
+        scanf("%d", &ele);
+        t->data = ele;
         t->next = top;
-        top = t;
+        top=t;
     }
 }
 
 void pop()
 {
-    struct node *t;
-    if (top == NULL)
+    if (top==NULL)
     {
-        printf("\nThe stack is EMPTY.\n");
+        printf("\nStack Underflow.\n");
     }
     else
     {
-        t = top;
-        printf("\nThe poped element is : %d", t->data);
-        top = top->next;
+        i--;
+        struct stack *t=top;
+        printf("\nThe popped element is: %d", t->data);
+        top=top->next;
         free(t);
-    }
-}
-
-void peek()
-{
-    struct node *t = top;
-    int ind, i=0, x=-1;
-    printf("\nEnter the index you want to peek:  ");
-    scanf("%d", &ind);
-    while (i != ind || t!=NULL)
-    {
-        x=t->data;
-        t=t->next;
-        i++;
-    }
-    if(x==-1)
-    {
-        printf("INVALID INDEX\n");
-    }
-    else
-    {
-        printf("\nThe element you wanted to peek is %d", x);
     }
 }
 
 void display()
 {
-    struct node *t = top;
-    while (t != NULL)
+    struct stack *t=top;
+    while(t!=NULL)
     {
         printf("%d\t", t->data);
-        t = t->next;
+        t=t->next;
+    }
+}
+
+void isFull()
+{
+    struct stack *t=(struct stack*)malloc(sizeof(struct stack));
+    if (t==NULL)
+    {
+        printf("\nThe stack is full.\n");
+    }
+    else
+    {
+        printf("\nThe stack is not full.\n");
     }
 }
 
 void isEmpty()
 {
-    if (top == NULL)
+    if(top==NULL)
     {
         printf("\nThe stack is empty.\n");
     }
     else
     {
-        printf("\nThe stack is NOT EMPTY.\n");
+        printf("\nThe stack is not empty.\n");
     }
 }
 
-void isFULL()
+void peek()
 {
-    struct node *t = (struct node *)malloc(sizeof(struct node));
-    if (t == NULL)
+    if (top!=NULL)
     {
-        printf("\nThe tscak is FULL.\n");
+        printf("\nThe topmost element is : %d", top->data);
     }
     else
     {
-        printf("\nThe stack is NOT FULL.\n");
+        printf("\nStack underflow.\n");
     }
 }
-
 int main()
 {
-    int n, x;
-    printf("\nEnter the number of elements you want to stack: ");
-    scanf("%d", &n);
-    for (int i = 0; i < n; i++)
+    printf("\nENTER: \n1.For pushing elements.\n2.For popping elements.\n3.For display.\n4.For determining if it's Full.\n5.For determining if it's Empty.\n");
+    while(1)
     {
-        printf("\nElement[%d]: ", i);
-        scanf("%d", &x);
-        push(x);
+        int ch;
+        printf("\n\nPRESS A BUTTON: ");
+        scanf("%d", &ch);
+        switch(ch)
+        {
+            case 1:
+            {
+                int n;
+                printf("\nEnter the number of elements you want to fill: ");
+                scanf("%d", &n);
+                for (int j=0;j<n;j++)
+                {
+                    push();
+                }
+                display();
+                break;
+            }
+            case 2:
+            {
+                int n;
+                printf("\nEnter the number of elements you want to pop: ");
+                scanf("%d", &n);
+                for (int j=0;j<n;j++)
+                {
+                    pop();
+                }
+                printf("\n");
+                display();
+                break;
+            }
+            case 3:
+            {
+                printf("\nThe given stack: \n");
+                display();
+                break;
+            }
+            case 4:
+            {
+                isFull();
+                break;
+            }
+            case 5:
+            {
+                isEmpty();
+                break;
+            }
+            case 6:
+            {
+                peek();
+                break;
+            }
+            case 7:
+            {
+                printf("\n\nEXITING...");
+                goto news;
+                break;
+            }
+            default:
+            {
+                printf("\nINVALID NUMBER.");
+            }
+        }
     }
-    printf("\nGiven stack:\n");
-    display();
-
-    pop();
-    printf("\nAfter popping the stack :\n");
-    display();
-    isEmpty();
-    isFULL();
-    peek();
-
+    news:
+    printf("\nEXITED.");
     return 0;
 }
